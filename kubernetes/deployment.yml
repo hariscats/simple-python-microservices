@@ -1,21 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python-webapp
+  name: flask-app
   labels:
-    app: web
+    app: flask-app
 spec:
-  replicas: 2
+  replicas: 3  # Adjust the number of replicas as needed
   selector:
     matchLabels:
-      app: web
+      app: flask-app
   template:
     metadata:
       labels:
-        app: web
+        app: flask-app
     spec:
       containers:
-      - name: webapp
-        image: your-docker-repo/your-app:1.0
+      - name: flask-app
+        image: <acr-login-server>/flask-microservices-demo:latest
         ports:
         - containerPort: 5000
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10

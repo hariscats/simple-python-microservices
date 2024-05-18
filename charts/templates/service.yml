@@ -1,15 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "charts.fullname" . }}
+  name: {{ include "flask-app.fullname" . }}
   labels:
-    {{- include "charts.labels" . | nindent 4 }}
+    {{- include "flask-app.labels" . | nindent 4 }}
 spec:
-  type: LoadBalancer
+  type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
-      protocol: TCP
-      name: http
+      targetPort: 5000
   selector:
-    {{- include "charts.selectorLabels" . | nindent 4 }}
+    {{- include "flask-app.selectorLabels" . | nindent 4 }}

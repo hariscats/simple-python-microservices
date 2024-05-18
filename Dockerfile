@@ -1,5 +1,7 @@
-# Use the official Python image from the Alpine variant
-FROM python:3.10-alpine
+FROM python:3.10-slim
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y gcc build-essential
 
 # Set the working directory
 WORKDIR /app
@@ -12,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src src
 
 # Install curl for the HEALTHCHECK
-RUN apk add --no-cache curl
+RUN apt-get install -y curl
 
 # Expose the port that the application runs on
 EXPOSE 5000
