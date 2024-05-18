@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: <acr-login-server>/flask-microservices-demo:latest
+        image: your-acr-repo/flask-microservices-demo:1.0.0
         ports:
         - containerPort: 5000
         env:
