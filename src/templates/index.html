@@ -1,11 +1,90 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>
-        Dockerizing a Python Web App
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservices Demo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            margin-top: 20px;
+        }
+        footer {
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1> Simple Web App using Flask Framework</h1>
-<h2> Response from host {{ HOSTNAME }} with IP Address {{ IP }} </h2>
+    <div class="container">
+        <h1 class="text-center">Microservices Demo</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Hostname and IP Address</h5>
+                <p class="card-text">Hostname: <span id="hostname">{{ HOSTNAME }}</span></p>
+                <p class="card-text">IP Address: <span id="ip">{{ IP }}</span></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">System Information</h5>
+                <p class="card-text">CPU Usage: <span id="cpu-usage">Loading...</span>%</p>
+                <p class="card-text">Memory Usage: <span id="memory-usage">Loading...</span>%</p>
+                <p class="card-text">Disk Usage: <span id="disk-usage">Loading...</span>%</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Random Joke</h5>
+                <p id="joke-setup">Loading...</p>
+                <p id="joke-punchline"></p>
+                <button class="btn btn-primary" onclick="fetchRandomJoke()">Fetch Another Joke</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Microservices Demo</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').innerText = new Date().getFullYear();
+
+        function fetchSystemInfo() {
+            fetch('/system-info')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cpu-usage').innerText = data.cpu_percent;
+                    document.getElementById('memory-usage').innerText = data.memory_percent;
+                    document.getElementById('disk-usage').innerText = data.disk_percent;
+                })
+                .catch(error => console.error('Error fetching system info:', error));
+        }
+
+        function fetchRandomJoke() {
+            fetch('/random-joke')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('joke-setup').innerText = data.setup;
+                    document.getElementById('joke-punchline').innerText = data.punchline;
+                })
+                .catch(error => console.error('Error fetching joke:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            fetchSystemInfo();
+            fetchRandomJoke();
+        });
+    </script>
 </body>
 </html>
