@@ -1,0 +1,59 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+
+# Ignore logs
+*.log
+
+# Ignore virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Ignore Python egg and cache files
+*.egg-info/
+.eggs/
+*.egg
+*.cache
+
+# Ignore temporary and editor files
+*~
+*.swp
+*.swo
+.DS_Store
+*.bak
+*.backup
+
+# Ignore test files and directories
+tests/
+*.test.py
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore personal configuration files
+*.iml
+*.idea/
+.vscode/
+
+# Ignore version control files
+.git/
+.gitignore
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+
+# Ignore sensitive files
+.env
+.env.*
+
+# Ignore documentation files
+docs/
+
+# Ignore Helm charts
+charts/
